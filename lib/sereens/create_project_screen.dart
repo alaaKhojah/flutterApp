@@ -7,11 +7,9 @@ import '../widgets/date_input.dart';
 import '../widgets/project_categories_inputs.dart';
 import '../widgets/description_card.dart';
 import '../providers/projects_provider.dart';
-import '../models/project.dart';
-
+// import '../models/project.dart';
 
 class CreateProject extends StatefulWidget {
-
   static const routeName = 'create-project';
 
   @override
@@ -20,30 +18,68 @@ class CreateProject extends StatefulWidget {
 
 class _CreateProjectState extends State<CreateProject> {
   final Color color = Colors.indigoAccent;
-
   final Color bgColor = Color(0xffF3F3F3);
+  var _isInit = true;
+  var _initValues = {
+    'title': '',
+    'description': '',
+    'startDate': '',
+    'dueDate': '',
+    'ptype': '',
+    'pstatus': '',
+    'manager': '',
+  };
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final projectId = ModalRoute.of(context).settings.arguments as int;
+      if (projectId != null) {
+        final loadedProject =
+            Provider.of<Projects>(context, listen: false).findById(projectId);
+        // print(projectId);
+        _initValues = {
+          'title': loadedProject.title,
+          'description': loadedProject.desceiption,
+          'startDate': loadedProject.startDate.toString(),
+          'dueDate': loadedProject.dueDate.toString(),
+          'ptype': loadedProject.pType.toString(),
+          'pstatus': loadedProject.pState.toString(),
+          'manager': loadedProject.projectManager.managerId ,
+        };
 
-  // String projectTitle;
+      }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
- final projectProvider= Provider.of<Projects>(context);
+    final projectProvider = Provider.of<Projects>(context);
 
-   void addNewProjectFun(){
-  //   final addnp= Project(id: null, title: projectProvider.getPtitile, desceiption:  projectProvider.getpDescription, startDate:projectProvider.getsetPStartDate
-  //  , dueDate: projectProvider.getsetPDueDate,  pState: projectProvider.getPStatus, pType: projectProvider.getsetPType, projectManager: projectProvider.getManager);
-   
-  //   projectProvider._items.add(addnp);
-  projectProvider.addProject();
-     print(projectProvider.getPtitile) ;
-    print(projectProvider.getpDescription);
-    print(projectProvider.getsetPStartDate);
-    print(projectProvider.getsetPDueDate);
-    print(projectProvider.getsetPType);
-    print(projectProvider.getPStatus);
-    print(projectProvider.getManager.managerId);
-    Navigator.of(context).pop();
-  }
+    void addNewProjectFun() {
+      //   final addnp= Project(id: null, title: projectProvider.getPtitile, desceiption:  projectProvider.getpDescription, startDate:projectProvider.getsetPStartDate
+      //  , dueDate: projectProvider.getsetPDueDate,  pState: projectProvider.getPStatus, pType: projectProvider.getsetPType, projectManager: projectProvider.getManager);
+
+      //   projectProvider._items.add(addnp);
+      projectProvider.addProject();
+      print(projectProvider.getPtitile);
+      print(projectProvider.getpDescription);
+      print(projectProvider.getsetPStartDate);
+      print(projectProvider.getsetPDueDate);
+      print(projectProvider.getsetPType);
+      print(projectProvider.getPStatus);
+      print(projectProvider.getManager.managerId);
+      projectProvider.setPtitle(null);
+      projectProvider.setpDescription(null);
+      projectProvider.setPStartDate(null);
+      projectProvider.setPDueDate(null);
+      projectProvider.setPType(null);
+      projectProvider.setPStatus(null);
+      projectProvider.setManager(null);
+
+      Navigator.of(context).pop();
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -70,15 +106,15 @@ class _CreateProjectState extends State<CreateProject> {
           Form(
             child: SliverList(
               delegate: SliverChildListDelegate([
-                CardBox(100.0, NameInputCard()),
-                CardBox(140.0, AssignToInputCard()),
-                CardBox(120.0, DateInputCard()),
+                CardBox(100.0, NameInputCard(_initValues['title'])),
+                CardBox(140.0, AssignToInputCard(_initValues['manager'])),
+                CardBox(120.0, DateInputCard(_initValues['startDate'],_initValues['dueDate'])),
                 CardBox(110.0, ProjectCategoriesCard()),
-                CardBox(170, DescriptionInputCard()),
+                CardBox(170, DescriptionInputCard(_initValues['description'])),
                 SizedBox(
                   height: 20,
                 ),
-                _createButton(context,color, addNewProjectFun),
+                _createButton(context, color, addNewProjectFun),
               ]),
             ),
           ),
@@ -96,9 +132,7 @@ class _CreateProjectState extends State<CreateProject> {
   }
 }
 
-
-
-Widget _createButton(BuildContext ctx,Color buttonColor, Function fun) {
+Widget _createButton(BuildContext ctx, Color buttonColor, Function fun) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 16.0),
     margin:

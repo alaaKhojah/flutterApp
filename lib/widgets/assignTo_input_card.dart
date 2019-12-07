@@ -3,35 +3,61 @@ import '../models/dummy_maneger.dart';
 import '../selection secreens/assignTo_selection.dart';
 
 class AssignToInputCard extends StatefulWidget {
-  // final String managerID;
-  // AssignToInputCard(this.managerID);
+  final String pManager;
+  AssignToInputCard(this.pManager);
   @override
   _AssignToInputCardState createState() => _AssignToInputCardState();
 }
 
 class _AssignToInputCardState extends State<AssignToInputCard> {
   String managerid;
-  String get getManagerName {
-    final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == managerid);
+  String emanagerid;
+
+   @override
+  void initState() {
+    emanagerid = widget.pManager;
+    super.initState(); 
+    print(emanagerid);
+  }
+ dynamic get eManagerName {
+    if(managerid != null)
+    {final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == managerid );
+    return loadedManager.managerName.toString();}
+    else if(emanagerid != null){
+      final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == emanagerid );
     return loadedManager.managerName.toString();
+    }
   }
-
-  String get getManagerAvatar {
-    final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == managerid);
+  dynamic get eManagerAvatar {
+    if(managerid != null)
+    {final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == managerid );
+    return loadedManager.managerAvatar.toString();}
+    else if(emanagerid != null){
+      final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == emanagerid );
     return loadedManager.managerAvatar.toString();
+    }
   }
 
-// final loadedManager= dummyManagers.firstWhere((mang)=>mang.managerId == managerid).toString();
+
+  // String get getManagerName {
+  //  final loadedManager =
+  //       dummyManagers.firstWhere((mang) => mang.managerId == managerid );
+  //   return loadedManager.managerName.toString();
+  //   }
+
+  // String get getManagerAvatar {
+  //   final loadedManager =
+  //       dummyManagers.firstWhere((mang) => mang.managerId == managerid);
+  //   return loadedManager.managerAvatar.toString();
+  // }
 
   awaitReturnValueFromManagersOptionScreen(BuildContext context) async {
     // start the SecondScreen and wait for it to finish with a result
     String managerResult = await
-        // Navigator.of(context).pushNamed(
-        //           AssignToSelection.routeName,
-        //         );
-
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -109,8 +135,8 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
               ),
             ),
           ),
-          managerid == null
-              ? Expanded(
+           (managerid==null && emanagerid ==null) || (managerid==null && emanagerid!=null)?
+                Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 40, right: 40),
@@ -118,8 +144,11 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                         child: Text("select manager",
                             style: Theme.of(context).textTheme.body2)),
                   ),
-                )
-              : Expanded(
+                ):
+          //  ( emanagerid!=null && managerid==null) || ( emanagerid!=null && managerid!=null) && ( managerid!=null) &&(emanagerid!=null)
+        //  ( emanagerid!=null || managerid!=null) 
+              // ?  
+              Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -145,12 +174,12 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                             child: ListTile(
                               leading: CircleAvatar(
                                 radius: 20.0,
-                                backgroundImage: NetworkImage(getManagerAvatar),
+                                backgroundImage: NetworkImage(eManagerAvatar),
                                 backgroundColor: Colors.transparent,
                               ),
                               title: SizedBox(
                                 child: Text(
-                                  getManagerName.toString(),
+                                  eManagerName.toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -169,6 +198,10 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                     ),
                   ),
                 ),
+
+              
+               
+
           SizedBox(
             height: 10,
           )

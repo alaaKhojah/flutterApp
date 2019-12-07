@@ -3,15 +3,21 @@ import 'package:provider/provider.dart';
 import '../providers/projects_provider.dart';
 
 class NameInputCard extends StatefulWidget {
-  //  String pTitle;
+  final String pTitle;
   //  BuildContext context;
-  // NameInputCard(this.pTitle, this.context);
+  NameInputCard(this.pTitle);
   @override
   _NameInputCardState createState() => _NameInputCardState();
 }
 
 class _NameInputCardState extends State<NameInputCard> {
   TextEditingController _ptitleController = TextEditingController();
+  bool _validate = false;
+  @override
+  void initState() {
+    _ptitleController.text = widget.pTitle;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +58,32 @@ class _NameInputCardState extends State<NameInputCard> {
               bottom: 10,
             ),
             child: TextField(
+              //we assign the value in controller rether than initialValue beacouse we use TextField 
+              //inested of TextFormField where TextField have not initialValue proprety
               controller: _ptitleController,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               cursorColor: Colors.indigoAccent,
-              // initialValue: pTitle,
-              // onChanged: (value){pTitle=value;},
-              // decoration: InputDecoration(
-              // labelText: "Project Title",
-              // ),
-              onChanged: (vChanged) => projectProvider.setPtitle(vChanged),
-                
-              onSubmitted: (vSubmit) => projectProvider.setPtitle(vSubmit),
+              // initialValue: widget.pTitle,
+              onChanged: (changv) {
+                projectProvider.setPtitle(changv);
+                setState(() {
+                  _ptitleController.text.isEmpty
+                      ? _validate = true
+                      : _validate = false;
+                });
+              },
+              onSubmitted: (vSubmit) {
+                projectProvider.setPtitle(vSubmit);
+                setState(() {
+                  _ptitleController.text.isEmpty
+                      ? _validate = true
+                      : _validate = false;
+                });
+              },
+
+              decoration: InputDecoration(
+                errorText: _validate ? 'project name is required' : null,
+              ),
             ),
           ),
         ]);

@@ -1,4 +1,4 @@
-import 'dart:core' ;
+import 'dart:core';
 import 'package:flutter/material.dart';
 // import 'package:pm_app/models/project.dart' as prefix0;
 import '../models/project.dart';
@@ -15,7 +15,7 @@ class Projects with ChangeNotifier {
             managerName: "Alaa",
             managerPostion: "CEO",
             managerAvatar: "https://i.imgur.com/BoN9kdC.png"),
-        startDate: DateTime.now(),
+        startDate:new DateTime.utc(2019, 10, 9),
         dueDate: new DateTime.utc(2019, 11, 9),
         pState: Status.Hold,
         pType: Type.Business,
@@ -73,65 +73,89 @@ class Projects with ChangeNotifier {
   // }
   // Project get getNewProjectData  => _newProjectData;
 //________________________________
-  String _pTitle ="";
-  void setPtitle(String title){
-    _pTitle=title;
+  String _pTitle = "";
+  void setPtitle(String title) {
+    _pTitle = title;
     notifyListeners();
   }
-  String get getPtitile=>_pTitle;
+
+  String get getPtitile => _pTitle;
   //_____________
- String _pDescription ="";
-  void setpDescription(String descruptio){
+  String _pDescription = "";
+  void setpDescription(String descruptio) {
     _pDescription = descruptio;
     notifyListeners();
   }
-  String get getpDescription =>_pDescription;
-  
+
+  String get getpDescription => _pDescription;
 
   //_______________
-  DateTime _pStartDate = DateTime.now();
-  DateTime _pDueDate = DateTime.now();
-  void setPStartDate(DateTime start){
+  DateTime _pStartDate;
+  DateTime _pDueDate;
+  void setPStartDate(DateTime start) {
     _pStartDate = start;
     notifyListeners();
   }
+
   DateTime get getsetPStartDate => _pStartDate;
 
-  void setPDueDate(DateTime due){
+  void setPDueDate(DateTime due) {
     _pDueDate = due;
     notifyListeners();
   }
+
   DateTime get getsetPDueDate => _pDueDate;
 //______________
-m.Manager _pManager= m.Manager(managerId: "", managerName: "", managerAvatar: "",managerPostion: "");
-void setManager(m.Manager mang){
-  _pManager =mang;
-  notifyListeners();
-}
-m.Manager get getManager => _pManager;
-//________________
-Status _pStatus = Status.Hold;
+  m.Manager _pManager = m.Manager(
+      managerId: "", managerName: "", managerAvatar: "", managerPostion: "");
+  void setManager(m.Manager mang) {
+    _pManager = mang;
+    notifyListeners();
+  }
 
-void setPStatus(Status state){
+  m.Manager get getManager => _pManager;
+//________________
+  Status _pStatus;
+
+  void setPStatus(Status state) {
     _pStatus = state;
     notifyListeners();
   }
-  Status get getPStatus =>_pStatus;
-//_________________
-Type _pType = Type.Others;
 
-void setPType(Type t){
+  Status get getPStatus => _pStatus;
+//_________________
+  Type _pType;
+
+  void setPType(Type t) {
     _pType = t;
     notifyListeners();
   }
-  Type get getsetPType =>_pType;
+
+  Type get getsetPType => _pType;
   //________________
 
   void addProject() {
-    final addnp= Project(id: null, title: getPtitile, desceiption:  getpDescription, startDate:getsetPStartDate
-   , dueDate: getsetPDueDate,  pState: getPStatus, pType: getsetPType, projectManager: getManager);
-   
-    _items.insert(0,addnp);
+    Project addnp = Project(
+        id: null,
+        title: getPtitile,
+        desceiption: getpDescription,
+        startDate: getsetPStartDate,
+        dueDate: getsetPDueDate,
+        pState: getPStatus,
+        pType: getsetPType,
+        projectManager: getManager);
+
+    _items.insert(0, addnp);
+
     notifyListeners();
+    
   }
+
+  
+
+
+// final afterAdd =Project(id: null, title: "", desceiption:  "", startDate: null,
+//     dueDate: null,  pState: null, pType: null, projectManager: null);
+
+//   Project get getafterAdd=> afterAdd;
 }

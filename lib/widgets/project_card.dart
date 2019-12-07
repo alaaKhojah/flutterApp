@@ -54,6 +54,7 @@ Widget _popMenu(BuildContext ctx, int id) {
             // }));
             Navigator.of(ctx).pushNamed(
               CreateProject.routeName,
+              arguments: id
             );
           } else {
             Navigator.of(ctx).pushNamed(
