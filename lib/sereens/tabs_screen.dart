@@ -75,6 +75,7 @@ class _TabsScreenState extends State<TabsScreen> {
           elevation: 4.0,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          elevation:4,
           onTap: _selectPage,
           backgroundColor: Colors.white,
           unselectedItemColor: Colors.grey,

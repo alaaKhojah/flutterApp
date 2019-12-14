@@ -15,7 +15,7 @@ class Projects with ChangeNotifier {
             managerName: "Alaa",
             managerPostion: "CEO",
             managerAvatar: "https://i.imgur.com/BoN9kdC.png"),
-        startDate:new DateTime.utc(2019, 10, 9),
+        startDate: new DateTime.utc(2019, 10, 9),
         dueDate: new DateTime.utc(2019, 11, 9),
         pState: Status.Hold,
         pType: Type.Business,
@@ -74,7 +74,7 @@ class Projects with ChangeNotifier {
   // Project get getNewProjectData  => _newProjectData;
 //________________________________
   String _pTitle = "";
-  void setPtitle(String title) {
+  setPtitle(String title) {
     _pTitle = title;
     notifyListeners();
   }
@@ -134,6 +134,19 @@ class Projects with ChangeNotifier {
   Type get getsetPType => _pType;
   //________________
 
+  // Project get getProject {
+  //   return
+  //   Project(
+  //       id: null,
+  //       title: _pTitle,
+  //       desceiption: _pDescription,
+  //       startDate: _pStartDate,
+  //       dueDate: _pDueDate,
+  //       pType: _pType,
+  //       pState: _pStatus,
+  //       projectManager: _pManager);
+  // }
+
   void addProject() {
     Project addnp = Project(
         id: null,
@@ -144,18 +157,30 @@ class Projects with ChangeNotifier {
         pState: getPStatus,
         pType: getsetPType,
         projectManager: getManager);
+    // Project addnp= getProject;
 
     _items.insert(0, addnp);
 
     notifyListeners();
-    
   }
 
-  
+  void updateProject(int id, Project updatedProjectInfo) {
+    final projIndex = _items.indexWhere((proj) => proj.id == id);
 
-
-// final afterAdd =Project(id: null, title: "", desceiption:  "", startDate: null,
-//     dueDate: null,  pState: null, pType: null, projectManager: null);
-
-//   Project get getafterAdd=> afterAdd;
+    if (projIndex >= 0) {
+      // updatedProjectInfo = Project(
+      //     id: projIndex,
+      //     title: _pTitle,
+      //     desceiption: _pDescription,
+      //     startDate: _pStartDate,
+      //     dueDate: _pDueDate,
+      //     pState: _pStatus,
+      //     pType: _pType,
+      //     projectManager: _pManager);
+      _items[projIndex] = updatedProjectInfo;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
 }

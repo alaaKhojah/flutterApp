@@ -13,10 +13,20 @@ class NameInputCard extends StatefulWidget {
 class _NameInputCardState extends State<NameInputCard> {
   TextEditingController _ptitleController = TextEditingController();
   bool _validate = false;
+  // bool _isInit = true;
   @override
   void initState() {
-    _ptitleController.text = widget.pTitle;
+    if (widget.pTitle != null) {
+      _ptitleController.text = widget.pTitle;
+    }
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _ptitleController.dispose();
+    super.dispose();
   }
 
   @override
@@ -57,23 +67,40 @@ class _NameInputCardState extends State<NameInputCard> {
               right: 40,
               bottom: 10,
             ),
-            child: TextField(
-              //we assign the value in controller rether than initialValue beacouse we use TextField 
+            child: TextFormField(
+              //we assign the value in controller rether than initialValue beacouse we use TextField
               //inested of TextFormField where TextField have not initialValue proprety
               controller: _ptitleController,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               cursorColor: Colors.indigoAccent,
               // initialValue: widget.pTitle,
               onChanged: (changv) {
-                projectProvider.setPtitle(changv);
+                if (_ptitleController.text != null) {
+                  setState(() {
+                    _ptitleController.text= changv;
+                    projectProvider.setPtitle(changv);
+                  });
+                } else {
+                  projectProvider.setPtitle(changv);
+                }
+
                 setState(() {
                   _ptitleController.text.isEmpty
                       ? _validate = true
                       : _validate = false;
                 });
               },
-              onSubmitted: (vSubmit) {
-                projectProvider.setPtitle(vSubmit);
+
+              // onEditingComplete: () {projectProvider.setPtitle(_ptitleController.text);},
+              onSaved: (vSubmit) {
+                if (_ptitleController.text != null) {
+                  setState(() {
+                    vSubmit= _ptitleController.text  ;
+                    projectProvider.setPtitle(vSubmit);
+                  });
+                } else {
+                  projectProvider.setPtitle(vSubmit);
+                }
                 setState(() {
                   _ptitleController.text.isEmpty
                       ? _validate = true

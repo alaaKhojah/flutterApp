@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../providers/projects_provider.dart';
 
 class AssignToSelection extends StatefulWidget {
+  // final String pManager;
+  // AssignToSelection(this.pManager);
   static const routeName = 'assignTo-selection';
   @override
   _AssignToSelectionState createState() => _AssignToSelectionState();
@@ -97,10 +99,11 @@ class ManagerInfo extends StatelessWidget {
     return InkWell(
       //when click in on manager the (pop) will take the clicked manage id and sened to the previous page
       onTap: () {
-        
+       
         projectProvider.setManager(Manager(managerId: id , managerName: name, managerAvatar: avatar, managerPostion: position));
         Navigator.pop(context, id);
         print(id);
+        
       },
       child: Card(
         child: ListTile(

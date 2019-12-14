@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/dummy_maneger.dart';
 import '../selection secreens/assignTo_selection.dart';
+import 'package:provider/provider.dart';
+import '../providers/projects_provider.dart';
 
 class AssignToInputCard extends StatefulWidget {
   final String pManager;
@@ -11,58 +13,56 @@ class AssignToInputCard extends StatefulWidget {
 
 class _AssignToInputCardState extends State<AssignToInputCard> {
   String managerid;
-  String emanagerid;
+  // bool _isInit = true;
+  // String emanagerid;
 
-   @override
+  @override
   void initState() {
-    emanagerid = widget.pManager;
-    super.initState(); 
-    print(emanagerid);
-  }
- dynamic get eManagerName {
-    if(managerid != null)
-    {final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == managerid );
-    return loadedManager.managerName.toString();}
-    else if(emanagerid != null){
-      final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == emanagerid );
-    return loadedManager.managerName.toString();
-    }
-  }
-  dynamic get eManagerAvatar {
-    if(managerid != null)
-    {final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == managerid );
-    return loadedManager.managerAvatar.toString();}
-    else if(emanagerid != null){
-      final loadedManager =
-        dummyManagers.firstWhere((mang) => mang.managerId == emanagerid );
-    return loadedManager.managerAvatar.toString();
+    if (widget.pManager != null) {
+      managerid = widget.pManager;
+      super.initState();
+      // print("manager id: " + managerid);
     }
   }
 
-
-  // String get getManagerName {
-  //  final loadedManager =
-  //       dummyManagers.firstWhere((mang) => mang.managerId == managerid );
-  //   return loadedManager.managerName.toString();
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     if (widget.pManager != null) {
+  //        managerid = widget.pManager;
+  //        setState(() {
+  //           Provider.of<Projects>(context).setManager(Manager(
+  //           managerId: widget.pManager,
+  //           managerName: "",
+  //           managerAvatar: "",
+  //           managerPostion: ""));
+  //        });
+       
+  //     }
   //   }
-
-  // String get getManagerAvatar {
-  //   final loadedManager =
-  //       dummyManagers.firstWhere((mang) => mang.managerId == managerid);
-  //   return loadedManager.managerAvatar.toString();
+  //   _isInit = false;
+  //   super.didChangeDependencies();
   // }
+
+  String get getManagerName {
+    final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == managerid);
+    return loadedManager.managerName.toString();
+  }
+
+  String get getManagerAvatar {
+    final loadedManager =
+        dummyManagers.firstWhere((mang) => mang.managerId == managerid);
+    return loadedManager.managerAvatar.toString();
+  }
 
   awaitReturnValueFromManagersOptionScreen(BuildContext context) async {
     // start the SecondScreen and wait for it to finish with a result
-    String managerResult = await
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AssignToSelection(),
-            ));
+    String managerResult = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AssignToSelection(),
+        ));
 
     setState(() {
       managerid = managerResult;
@@ -135,8 +135,8 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
               ),
             ),
           ),
-           (managerid==null && emanagerid ==null) || (managerid==null && emanagerid!=null)?
-                Expanded(
+          managerid == null || managerid == ''
+              ? Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 40, right: 40),
@@ -144,11 +144,8 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                         child: Text("select manager",
                             style: Theme.of(context).textTheme.body2)),
                   ),
-                ):
-          //  ( emanagerid!=null && managerid==null) || ( emanagerid!=null && managerid!=null) && ( managerid!=null) &&(emanagerid!=null)
-        //  ( emanagerid!=null || managerid!=null) 
-              // ?  
-              Expanded(
+                )
+              : Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -174,12 +171,12 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                             child: ListTile(
                               leading: CircleAvatar(
                                 radius: 20.0,
-                                backgroundImage: NetworkImage(eManagerAvatar),
+                                backgroundImage: NetworkImage(getManagerAvatar),
                                 backgroundColor: Colors.transparent,
                               ),
                               title: SizedBox(
                                 child: Text(
-                                  eManagerName.toString(),
+                                  getManagerName.toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -198,10 +195,6 @@ class _AssignToInputCardState extends State<AssignToInputCard> {
                     ),
                   ),
                 ),
-
-              
-               
-
           SizedBox(
             height: 10,
           )

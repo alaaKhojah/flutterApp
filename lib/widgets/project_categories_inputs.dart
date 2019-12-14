@@ -1,36 +1,69 @@
 import 'package:flutter/material.dart';
-import '../models/project.dart';
+import 'package:pm_app/models/project.dart' as prefix0;
+// import '../models/project.dart';
 import '../selection secreens/project_status_selection.dart';
 import '../selection secreens/project_type_selection.dart';
+import 'package:provider/provider.dart';
+import '../providers/projects_provider.dart';
 
 class ProjectCategoriesCard extends StatefulWidget {
-  // final projectType.Type projectType;
-  // final projectType.Status status;
-  // ProjectCategoriesCard(this.projectType, this.status);
+  final prefix0.Type editableProjectType;
+  final prefix0.Status editableStatus;
+  ProjectCategoriesCard(this.editableProjectType,this.editableStatus);
   @override
   _ProjectCategoriesCardState createState() => _ProjectCategoriesCardState();
 }
 
 class _ProjectCategoriesCardState extends State<ProjectCategoriesCard> {
-  Status currentStatus;
-  Type selectedType;
+  prefix0.Status currentStatus;
+  prefix0.Type selectedType;
+  // bool _isInit=true;
+
+  @override
+  void initState() {
+    if(widget.editableProjectType !=null && widget.editableStatus!=null )
+    { print("project type:  ${widget.editableProjectType}");
+      print("project Status: ${widget.editableStatus}");
+      selectedType=widget.editableProjectType;
+      currentStatus= widget.editableStatus;
+    }
+      super.initState();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     if(widget.editableProjectType !=null && widget.editableStatus!=null )
+  //   { print("project type:  ${widget.editableProjectType}");
+  //     print("project Status: ${widget.editableStatus}");
+  //     selectedType=widget.editableProjectType;
+  //     currentStatus= widget.editableStatus;
+  //      Provider.of<Projects>(context).setPStatus(currentStatus);
+  //      Provider.of<Projects>(context).setPType(selectedType);
+  //   }
+       
+  //     }
+    
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   String get projState {
     switch (currentStatus) {
-      case Status.Open:
+      case prefix0.Status.Open:
         return 'open';
         break;
-      case Status.InProgress:
+      case prefix0.Status.InProgress:
         return 'In Progress';
         break;
 
-      case Status.Hold:
+      case prefix0.Status.Hold:
         return 'hold';
         break;
-      case Status.Cancelled:
+      case prefix0.Status.Cancelled:
         return 'Cancelled';
         break;
-      case Status.Executed:
+      case prefix0.Status.Executed:
         return 'Executed';
         break;
       default:
@@ -82,7 +115,7 @@ class _ProjectCategoriesCardState extends State<ProjectCategoriesCard> {
         children: <Widget>[
           Text("Your project type is "),
           Text(
-            typeMap[selectedType]['text'],
+            prefix0.typeMap[selectedType]['text'],
             style: Theme.of(context).textTheme.body1,
           ),
          
@@ -95,7 +128,7 @@ class _ProjectCategoriesCardState extends State<ProjectCategoriesCard> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        //____________________________ 1) frist Column to show the Catagories boutton to show the options page__________________________________________________________
+        //____________________________ 1) frist Column  show the Catagories boutton to show the options page__________________________________________________________
         Row(
           children: <Widget>[
             // A) button to show project type otion
@@ -198,7 +231,7 @@ class _ProjectCategoriesCardState extends State<ProjectCategoriesCard> {
                       Expanded(
                         
                         child: selectedType == null ? Text("select one", style: Theme.of(context).textTheme.body2)
-                     : Text(typeMap[selectedType]['text'], style: Theme.of(context).textTheme.body2),
+                     : Text(prefix0.typeMap[selectedType]['text'], style: Theme.of(context).textTheme.body2),
                       ),
                     ],
                   ),
@@ -220,8 +253,8 @@ class _ProjectCategoriesCardState extends State<ProjectCategoriesCard> {
                       children: <Widget>[
                         currentStatus == null
                             ? Text("")
-                            : Icon(resultsMap[currentStatus]['icons'],
-                                color: resultsMap[currentStatus]['color']),
+                            : Icon(prefix0.resultsMap[currentStatus]['icons'],
+                                color: prefix0.resultsMap[currentStatus]['color']),
                         SizedBox(
                           width: 10,
                         ),

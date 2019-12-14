@@ -83,11 +83,15 @@ class _DateInputCardState extends State<DateInputCard> {
                       _selectedStartDate == null ? _validate = true
                       : _validate = false;
                     }),
+                    onSaved: (sDvalue) => setState(() {
+                      // _selectedStartDate = sDvalue;
+                        projectProvider.setPStartDate(sDvalue);
+                    }),
                     onShowPicker: (context, currentValue) async {
                       final datee = await showDatePicker(
                         context: context,
                         firstDate: DateTime(2019),
-                        initialDate: currentValue ?? DateTime.now(),
+                        initialDate: currentValue ?? DateTime.now() ,
                         lastDate: _selectedSDueDate ?? DateTime(2030),
                       );
                       return datee;
@@ -114,7 +118,10 @@ class _DateInputCardState extends State<DateInputCard> {
                       _selectedSDueDate == null ? _validate2 = true
                       : _validate2 = false;
                     }),
-                    // initialValue: _selectedStartDate,
+                    onSaved: (dDValue) {
+                      // _selectedSDueDate=dDValue;
+                     projectProvider.setPDueDate(dDValue);
+                    },
                     onShowPicker: (context, currentValue1) async {
                       final date = await showDatePicker(
                         context: context,
